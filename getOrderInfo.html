@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<title>全品商城--结算页</title>
+
+    <link rel="stylesheet" type="text/css" href="css/webbase.css" />
+    <link rel="stylesheet" type="text/css" href="css/pages-getOrderInfo.css" />
+</head>
+
+<body>
+	<!--head-->
+	<div id="orderInfoApp">
+		<div class="top">
+			<shortcut />
+		</div>
+	
+	<div  class="cart py-container">
+		
+			<!--logoArea-->
+			<div class="logoArea">
+				<div class="fl logo"><span class="title">结算页</span></div>
+			</div>
+			
+		<!--主内容-->
+		<div class="checkout py-container">
+			<div class="checkout-tit">
+				<h4 class="tit-txt">填写并核对订单信息</h4>
+			</div>
+			<div class="checkout-steps">
+				<!--收件人信息-->
+				<div class="step-tit">
+					<h5>收件人信息<span><a data-toggle="modal" data-target=".edit" data-keyboard="false" class="newadd">新增收货地址</a></span></h5>
+				</div>
+				<div class="step-cont">
+					<div class="addressInfo">
+						<ul class="addr-detail">
+							<li class="addr-item" v-for="(a,i) in addresses" :key="i">
+							  <div>
+								  <div :class="{con:true,name:true,selected:i === selectedAddress}"><a href="javascript:;" @click.stop="selectedAddress=i" >{{a.name}}<span title="点击取消选择"></span>&nbsp;</a></div>
+								<div class="con address">{{a.state + a.city + a.district + a.address}} <span>{{a.phone}}</span>
+									<span class="base" v-if="a.default">默认地址</span>
+									<span class="edittext"><a data-toggle="modal" data-target=".edit" data-keyboard="false" >编辑</a>&nbsp;&nbsp;<a href="javascript:;">删除</a></span>
+								</div>
+								<div class="clearfix"></div>
+							  </div>
+
+							</li>
+						</ul>
+						<!--添加地址-->
+                          <div  tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade edit">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" data-dismiss="modal" aria-hidden="true" class="sui-close">×</button>
+						        <h4 id="myModalLabel" class="modal-title">添加收货地址</h4>
+						      </div>
+						      <div class="modal-body">
+						      	<form action="" class="sui-form form-horizontal">
+						      		 <div class="control-group">
+									    <label class="control-label">收货人：</label>
+									    <div class="controls">
+									      <input type="text" class="input-medium">
+									    </div>
+									  </div>
+									   
+									   <div class="control-group">
+									    <label class="control-label">详细地址：</label>
+									    <div class="controls">
+									      <input type="text" class="input-large">
+									    </div>
+									  </div>
+									   <div class="control-group">
+									    <label class="control-label">联系电话：</label>
+									    <div class="controls">
+									      <input type="text" class="input-medium">
+									    </div>
+									  </div>
+									   <div class="control-group">
+									    <label class="control-label">邮箱：</label>
+									    <div class="controls">
+									      <input type="text" class="input-medium">
+									    </div>
+									  </div>
+									   <div class="control-group">
+									    <label class="control-label">地址别名：</label>
+									    <div class="controls">
+									      <input type="text" class="input-medium">
+									    </div>
+									    <div class="othername">
+									    	建议填写常用地址：<a href="#" class="sui-btn btn-default">家里</a>　<a href="#" class="sui-btn btn-default">父母家</a>　<a href="#" class="sui-btn btn-default">公司</a>
+									    </div>
+									  </div>
+						      	</form>
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" data-ok="modal" class="sui-btn btn-primary btn-large">确定</button>
+						        <button type="button" data-dismiss="modal" class="sui-btn btn-default btn-large">取消</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+						 <!--确认地址-->
+					</div>
+					<div class="hr"></div>
+					
+				</div>
+				<div class="hr"></div>
+				<!--支付和送货-->
+				<div class="payshipInfo">
+					<div class="step-tit">
+						<h5>支付方式</h5>
+					</div>
+					<div class="step-cont">
+						<ul class="payType" >
+							<li class="" >支付宝付款<span title="点击取消选择"></span></li>
+							<li class="selected">货到付款<span title="点击取消选择"></span></li>
+						</ul>
+					</div>
+					<div class="hr"></div>
+					<div class="step-tit">
+						<h5>送货清单</h5>
+					</div>
+					<div class="step-cont">
+						<ul class="send-detail">
+							<!-- 送货清单 -->
+							<li v-for="cart in selectList">
+								<div class="sendGoods">
+									<ul class="yui3-g">
+										<li class="yui3-u-1-6">
+											<span><img width="70px" height="70px" :src="cart.image"/></span>
+										</li>
+										<li class="yui3-u-7-12">
+											<div class="desc">{{cart.title}}</div>
+											<div class="seven">{{cart.ownSpec}}</div>
+											<div class="seven">7天无理由退货</div>
+										</li>
+										<li class="yui3-u-1-12">
+											<div class="price">{{b2c.formatPrice(cart.price*cart.num)}}</div>
+										</li>
+										<li class="yui3-u-1-12">
+											<div class="num">{{cart.num}}</div>
+										</li>
+										<li class="yui3-u-1-12">
+											<div class="exit">{{cart.stock==0?'商品缺货':'有货'}}</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="hr"></div>
+				</div>
+				<div class="linkInfo">
+					<div class="step-tit">
+						<h5>发票信息</h5>
+					</div>
+					<div class="step-cont">
+						<span>普通发票（电子）</span>
+						<span>个人</span>
+						<span>明细</span>
+					</div>
+				</div>
+				<div class="cardInfo">
+					<div class="step-tit">
+						<h5>使用优惠/抵用</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="order-summary">
+			<div class="static fr">
+				<div class="list">
+					<span><i class="number">{{num}}</i>件商品，总商品金额</span>
+					<em class="allprice">{{b2c.formatPrice(cartListPrice)}}</em>
+				</div>
+				<div class="list">
+					<span>返现：</span>
+					<em class="money">0.00</em>
+				</div>
+				<div class="list">
+					<span>运费：</span>
+					<em class="transport">0.00</em>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix trade">
+			<div class="fc-price">应付金额:　<span class="price">{{b2c.formatPrice(cartListPrice)}}</span></div>
+			<div class="fc-receiverInfo">
+				寄送至:{{addresses[selectedAddress].address}}
+				收货人：{{addresses[selectedAddress].name}} {{addresses[selectedAddress].phone}}
+			</div>
+		</div>
+		<div class="submit"> <!--href="pay.html" -->
+			<a class="sui-btn btn-danger btn-xlarge"  href="javascript:void(0)" @click="toPay">提交订单</a>
+		</div>
+	</div>
+
+	</div>
+	<script src="./js/vue/vue.js"></script>
+	<script src="./js/axios.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script type="text/javascript">
+        var orderInfoVm = new Vue({
+            el:"#orderInfoApp",
+            data:{
+                addresses:[],// 可选地址列表,假数据，需要从后台查询
+				b2c,//全局对象
+				selectedAddress: 0,//定义购买商品的地址变量
+				selectList:[], //要购买的数据
+				payMentType:1,
+				num:0 //购买的商品数量
+
+            },
+			created() {//钩子函数,生命周期函数
+				//加载地址数据（目前页面写死）
+				//加载要购买的数据
+				this.getSelectList();
+				this.getAddRessList();
+				this.allCartNum();//调用购买数量的方法
+			},
+			methods: {//方法函数
+				//取出地址集合,自定义地址
+				getAddRessList(){
+					this.addresses=[
+						{	
+							id:"1",
+							name:"李雷雷",// 收件人姓名
+							phone:"18888888888",// 电话
+							state:"河南省",// 省份
+							city:"郑州市",// 城市
+							district:"xx区",// 区
+							address:"xx街道1号院",// 街道地址
+							zipCode:"300000", // 邮编
+							default: true
+						},
+						{
+							id:"2",
+							name:"韩梅梅",// 收件人姓名
+							phone:"17777777777",// 电话
+							state:"北京市",// 省份
+							city:"北京市",// 城市
+							district:"昌平区",// 区
+							address:"xx街道5号院",// 街道地址
+							zipCode:"100000", // 邮编
+							default: false
+						}
+					]
+				},
+				  //展示购物车商品数量
+				allCartNum(){
+					this.selectList.map(cart=>{
+						this.num += cart.num;
+					})
+             	},
+				//取出选中本地库购物车(浏览器购物车)localstorage的数据集合
+				getSelectList(){
+					this.selectList=b2c.store.get("selectList");
+				},
+				toPay(){
+					//生成订单 需要 地址id   购买的skus集合 ，支付类型，
+					let order={};
+					//自定义地址id有bug,需加1,才能与后台对上
+					order.addressId=this.selectedAddress+1;
+					order.cartList=this.selectList;
+					order.payMentType=this.payMentType;
+					
+					//创建订单
+					b2c.http.post("/order/createOrder",order,
+						//不对data做任何处理，然后long类型，会精度丢失
+						{	
+							transformResponse:[
+								function (data){
+									return data;
+								}
+							]
+						}
+					)
+					.then(resp =>{
+					//订单成功增加 跳转支付
+					// window.location.href="http://www.b2c.com/pay.html?id="+resp.data;
+					//支付宝支付跳转
+					window.location.href="http://127.0.0.1:8089/pay/"+resp.data;
+					}).catch(resp=>{
+					//订单创建失败
+					alert("购买失败，请稍后重试，或者联系管理员")
+					});	
+				}
+			},
+			computed: {
+            //统计购物车所有sku 单价*数量，在相加
+				cartListPrice() {
+					if(this.selectList!=null){
+
+						return this.selectList.map(cart => cart.num * cart.price).reduce((p1, p2) => p1 + p2, 0);
+					}
+				}
+       		 },
+			components:{//组件
+                shortcut: () => import("/js/pages/shortcut.js")
+			}
+        });
+	</script>
+
+	<!-- 底部栏位 -->
+	<!--页面底部，由js动态加载-->
+	<div class="clearfix footer"></div>
+	<script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript">$(".footer").load("foot.html");</script>
+	<!--页面底部END-->
+
+<script type="text/javascript" src="js/plugins/jquery.easing/jquery.easing.min.js"></script>
+<script type="text/javascript" src="js/plugins/sui/sui.min.js"></script>
+<script type="text/javascript" src="js/pages/getOrderInfo.js"></script>
+</body>
+
+</html>
